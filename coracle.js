@@ -9,6 +9,7 @@ var context = canvas.getContext("2d")
 canvas.style.cursor = "none"
 canvas.style.border = "thin solid #000000"
 
+const canvasRect = canvas.getBoundingClientRect()
 const width = canvas.width
 const height = canvas.height
 
@@ -25,8 +26,8 @@ var fps = null
 document.addEventListener("mousemove", mouseMoveHandler, false)
 
 function mouseMoveHandler(e) {
-    mouseX = e.clientX
-    mouseY = e.clientY
+    mouseX = event.clientX - canvasRect.left
+    mouseY = event.clientY - canvasRect.top
 }
 
 window.requestAnimationFrame(loop)

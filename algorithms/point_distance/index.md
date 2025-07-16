@@ -14,7 +14,7 @@ const originY = 150
 
 function loop() {
 	clear()
-	fill("#000000")
+
 	circle(originX, originY, 3)
 	circle(mouseX, mouseY, 3)
 	line(originX, originY, mouseX, mouseY)
@@ -26,3 +26,5 @@ function loop() {
 	redraw()
 }
 ```
+
+Made with [Coracle](../../coracle.js)
