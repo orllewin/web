@@ -7,7 +7,7 @@ git commit -m $M
 git push origin main
 
 echo
-echo https://github.com/orllewin/resonance
+echo https://github.com/orllewin/web
 echo
 echo "^ ⌘-double-click to open"
 echo
