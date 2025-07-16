@@ -1,0 +1,24 @@
+<canvas id="canvas" width="300" height="300"></canvas>
+
+<script>
+const originX = 150
+const originY = 150
+
+function loop() {
+	clear()
+	fill("#000000")
+	circle(originX, originY, 3)
+	circle(mouseX, mouseY, 3)
+	line(originX, originY, mouseX, mouseY)
+	
+	let dx = originX - mouseX
+	let dy = originY - mouseY
+	let distance = floor(sqrt(dx * dx + dy * dy))
+	text("" + distance, 5, 20, 16)
+	redraw()
+}
+</script>
+<script src="../../coracle.js"></script>
+<script>
+	
+</script>

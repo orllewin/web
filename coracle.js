@@ -3,11 +3,17 @@
     Archived Kotlin Coracle: https://github.com/orllewin/coracle
  */
 
-var canvas = document.getElementById("canvas");
-var context = canvas.getContext("2d");
+var canvas = document.getElementById("canvas")
+var context = canvas.getContext("2d")
+
+canvas.style.cursor = "none"
+canvas.style.border = "thin solid #000000"
 
 const width = canvas.width
 const height = canvas.height
+
+var mouseX = 0
+var mouseY = 0
 
 let xTranslate = 0
 let yTranslate = 0
@@ -15,6 +21,13 @@ let yTranslate = 0
 const TWO_PI = 6.2831855
 
 var fps = null
+
+document.addEventListener("mousemove", mouseMoveHandler, false)
+
+function mouseMoveHandler(e) {
+    mouseX = e.clientX
+    mouseY = e.clientY
+}
 
 window.requestAnimationFrame(loop)
 
@@ -49,6 +62,12 @@ function translate(x, y){
 }
 
 //Drawing
+
+function text(text, x, y, size){
+    context.font = "" + size + "px sans"
+    context.fillText(text, x, y)
+}
+
 function line(x1, y1, x2, y2) {
     context.moveTo(xTranslate + x1, yTranslate + y1)
     context.lineTo(xTranslate + x2, yTranslate + y2)
@@ -62,6 +81,11 @@ function circle(x, y, r){
 }
 
 //Math
+
+function floor(n){
+    return Math.floor(n)
+}
+
 function random(max){
     return Math.floor(Math.random() * max)
 }
@@ -72,4 +96,8 @@ function sin(n){
 
 function cos(n){
     return Math.cos(n)
+}
+
+function sqrt(n){
+    return Math.sqrt(n)
 }
