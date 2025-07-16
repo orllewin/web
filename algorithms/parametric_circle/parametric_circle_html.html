@@ -1,0 +1,31 @@
+<canvas id="canvas" width="300" height="300"></canvas>
+<script>
+var step = 0
+
+const segmentCount = 80
+const radius = 100
+
+function loop() {
+    translate(width/2, height/2)
+
+    let angle = (step * TWO_PI / segmentCount)
+    let x = cos(angle) * radius
+    let y = sin(angle) * radius
+
+    fill("#000000")
+    circle(x, y, 2)
+
+    if (step == segmentCount){
+        clear()
+        step = 0
+    }else{
+        step++
+    }
+
+    redraw()
+}
+</script>
+<script src="../../coracle.js"></script>
+<script>
+    fps = 45
+</script>
