@@ -36,3 +36,5 @@ A human, born CO₂ at 333.73 ppm, living in Todmorden, Yorkshire, UK.
 
 ![The sea, I can't remember where](images/lento_orl_mono_standard_asus_ai2302_1708086971.jpg)  
 
+All code used to create this website can be found at [github.com/orllewin/web](https://github.com/orllewin/web). The digital garden archive was generated previously from an Obsidian vault.
+
