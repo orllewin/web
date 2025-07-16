@@ -22,7 +22,7 @@ function loop() {
 	let dx = originX - mouseX
 	let dy = originY - mouseY
 	let distance = floor(sqrt(dx * dx + dy * dy))
-	text("" + distance, 5, 20, 16)
+	text(`${distance}`, 5, 20, 16)
 	redraw()
 }
 ```
