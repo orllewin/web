@@ -1,3 +1,8 @@
+/**
+    A little-by-little port of Coracle to oldschool Javascript
+    Archived Kotlin Coracle: https://github.com/orllewin/coracle
+ */
+
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 
