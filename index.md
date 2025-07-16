@@ -26,6 +26,7 @@ A human, born CO₂ at 333.73 ppm, living in Todmorden, Yorkshire, UK.
 
 * [Stones](stones/) - a list of visited stones, mostly neolithic
 * [Trigpoints](trigpoints/) - trigpoint bagging
+* [Algorithms](algorithms/) - common code
 
 ## Archive
 
