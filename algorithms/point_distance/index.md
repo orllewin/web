@@ -1,6 +1,7 @@
 # Distance between two points
 
 ```
+//Pseudocode
 val dx = this.x - other.x
 val dy = this.y - other.y
 val distance = sqrt(dx * dx + dy * dy)

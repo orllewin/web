@@ -39,6 +39,7 @@ val HEADER = """
       background-color: white;
       padding: 4px;
     }
+    pre {tab-size: 2;}
     ul { padding-left: 16px; }
     li p{ margin: 0px; }
     hr { border: 0.5px solid #ababab; }
@@ -127,6 +128,8 @@ fun processMarkdown(directory: File, markdown: String, node: ASTNode, sb: String
         node.type.name == "EOL" -> sb.append("\n")
         node.type.name == "BR" -> sb.append("<br>\n")
         node.type.name == ":" -> if(!pendingEmbed) sb.append(":")
+        node.type.name == "(" -> if(!pendingEmbed) sb.append("(")
+        node.type.name == ")" -> if(!pendingEmbed) sb.append(")")
         node.type == MarkdownElementTypes.PARAGRAPH -> parseParagraph(directory, markdown, node, sb)
         node.type == MarkdownElementTypes.IMAGE -> parseImage(directory, markdown, node, sb)
         node.type == MarkdownElementTypes.UNORDERED_LIST -> parseUnorderedList(directory, markdown, node, sb)

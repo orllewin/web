@@ -57,6 +57,15 @@ function fill(colour){
     context.fillStyle = colour
 }
 
+function noStroke(){
+    context.strokeStyle = "rgba(1, 1, 1, 0)"
+    context.beginPath()
+}
+
+function stroke(colour){
+    context.strokeStyle = colour;
+}
+
 function translate(x, y){
     xTranslate = x
     yTranslate = y
@@ -79,9 +88,14 @@ function circle(x, y, r){
     context.beginPath()
     context.arc(xTranslate + x, yTranslate + y, r, 0, 2 * Math.PI)
     context.fill()
+    context.beginPath()
 }
 
 //Math
+
+function angle(x1, y1, x2, y2){
+    return Math.atan2(y2 - y1, x2 - x1)
+}
 
 function floor(n){
     return Math.floor(n)
