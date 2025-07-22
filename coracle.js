@@ -8,6 +8,7 @@ var context = canvas.getContext("2d")
 
 canvas.style.cursor = "none"
 canvas.style.border = "thin solid #000000"
+context.lineWidth = 0.5;
 
 const canvasRect = canvas.getBoundingClientRect()
 const width = canvas.width
@@ -15,6 +16,8 @@ const height = canvas.height
 
 var mouseX = 0
 var mouseY = 0
+
+var frame = 0
 
 let xTranslate = 0
 let yTranslate = 0
@@ -34,9 +37,11 @@ window.requestAnimationFrame(loop)
 
 function redraw(){
     if(fps == null){
+        frame++
         window.requestAnimationFrame(loop)
     }else{
         setTimeout(() => {
+            frame++
             requestAnimationFrame(loop)
         }, 1000 / fps)
     }
@@ -91,6 +96,14 @@ function circle(x, y, r){
     context.beginPath()
 }
 
+function rect(x, y, width, height){
+    context.beginPath()
+    context.rect(x, y, width, height)
+    context.fill()
+    context.beginPath()
+}
+
+
 //Math
 
 function angle(x1, y1, x2, y2){
@@ -103,6 +116,16 @@ function floor(n){
 
 function random(max){
     return Math.floor(Math.random() * max)
+}
+
+function randomFloat(min, max){
+    return Math.random() * (max - min) + min
+}
+
+function randomInt(min, max){
+    const minCeiled = Math.ceil(min)
+    const maxFloored = Math.floor(max)
+    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled)
 }
 
 function sin(n){
