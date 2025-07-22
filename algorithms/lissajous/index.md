@@ -20,8 +20,8 @@ function initialise() {
 	frame = 0
 	
 	translate(width/2, height/2)
-	freqA = randomFloat(5.0, 100.0)
-	freqB = randomFloat(5.0, 100.0)
+	freqA = randomFloat(25.0, 150.0)
+	freqB = randomFloat(25.0, 150.0)
 	
 	angle = (frame / freqB * TWO_PI)
 	prevX = cos(angle) * scale
@@ -55,3 +55,5 @@ function loop() {
 	redraw()
 }
 ```
+
+Made with [Coracle](../../coracle.js)
