@@ -110,6 +110,12 @@ function angle(x1, y1, x2, y2){
     return Math.atan2(y2 - y1, x2 - x1)
 }
 
+function distance(x1, y1, x2, y2){
+    let dx = x1 - x2
+    let dy = y1 - y2
+    return floor(sqrt(dx * dx + dy * dy))
+}
+
 function floor(n){
     return Math.floor(n)
 }

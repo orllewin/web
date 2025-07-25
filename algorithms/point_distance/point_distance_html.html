@@ -10,9 +10,12 @@ function loop() {
 	circle(mouseX, mouseY, 3)
 	line(originX, originY, mouseX, mouseY)
 	
+	//Available in coracle:
+	//let d = distance(originX, originY, mouseX, mouseY)
 	let dx = originX - mouseX
 	let dy = originY - mouseY
 	let distance = floor(sqrt(dx * dx + dy * dy))
+	
 	text(`${distance}`, 5, 20, 16)
 	redraw()
 }

@@ -5,3 +5,4 @@
 * [Point on circumference](circumference_point/) - point on circle circumference from origin
 * [Circles collision distance](circles_collision_distance/) - distance between two circles circumferences
 * [Lissajous](lissajous/) - the classic Lissajous curve
+* [Line midpoint](line_midpoint/) - point half way along a line

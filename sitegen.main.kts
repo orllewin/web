@@ -65,6 +65,7 @@ val FOOTER = """
  */
 
 var pendingEmbed = false
+var pendingVideo = false
 val flavour = CommonMarkFlavourDescriptor()
 
 when {
@@ -127,9 +128,9 @@ fun processMarkdown(directory: File, markdown: String, node: ASTNode, sb: String
         node.type.name.startsWith("ATX_") -> parseHeader(markdown, node, sb)
         node.type.name == "EOL" -> sb.append("\n")
         node.type.name == "BR" -> sb.append("<br>\n")
-        node.type.name == ":" -> if(!pendingEmbed) sb.append(":")
-        node.type.name == "(" -> if(!pendingEmbed) sb.append("(")
-        node.type.name == ")" -> if(!pendingEmbed) sb.append(")")
+        node.type.name == ":" -> if(!pendingEmbed && !pendingVideo) sb.append(":")
+        node.type.name == "(" -> if(!pendingEmbed && !pendingVideo) sb.append("(")
+        node.type.name == ")" -> if(!pendingEmbed && !pendingVideo) sb.append(")")
         node.type == MarkdownElementTypes.PARAGRAPH -> parseParagraph(directory, markdown, node, sb)
         node.type == MarkdownElementTypes.IMAGE -> parseImage(directory, markdown, node, sb)
         node.type == MarkdownElementTypes.UNORDERED_LIST -> parseUnorderedList(directory, markdown, node, sb)
@@ -201,6 +202,8 @@ fun parseText(markdown: String, node: ASTNode, sb: StringBuilder) {
     val text = markdown.substring(node.startOffset, node.endOffset)
     if(text.startsWith("embedHtml")){
         pendingEmbed = true
+    }else if(text.startsWith("embedVideo")){
+        pendingVideo = true
     }else{
         if(pendingEmbed){
             val embedLocation = "${dir.absolutePath}/$text"
@@ -208,11 +211,32 @@ fun parseText(markdown: String, node: ASTNode, sb: StringBuilder) {
             val embedFile = File(embedLocation)
             sb.append(embedFile.readText())
             pendingEmbed = false
+        }else if(pendingVideo){
+            //ffmpeg -i input.mp4 -vf "scale=-1:480" output.mp4
+            
+            val videoLocation = "${dir.absolutePath}/$text"
+            val videoFile = File(videoLocation)
+            
+            val targetFilename = "${videoFile.nameWithoutExtension}_c.mp4"
+            val targetLocation = "${videoFile.path.replace(videoFile.name, "")}$targetFilename"
+              
+            shell("ffmpeg -y -i $videoLocation -vf \"scale=-1:480\" $targetLocation")
+          
+            sb.append("<video controls>")
+            sb.append("<source src=\"$targetFilename\" type=\"video/mp4\">")
+            sb.append("</video>")
+            
+            val convertedFile = File(targetLocation)
+            val convertedPath = Paths.get(convertedFile.path)
+            val convertedSize = Files.size(convertedPath)
+            val sizeLabel = bytesLabel(convertedSize.toDouble())
+            sb.append("\n<br>\n<span class=\"tinytext\">$targetFilename (${sizeLabel})</span>")
+            
+            pendingVideo = false
         }else{
             log("Adding text: $text")
             sb.append(text)
         }
-
     }
 }
 
