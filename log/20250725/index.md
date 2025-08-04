@@ -1,4 +1,4 @@
-# Friday 25th July
+# Friday 25th July 2025
 
 P playing the Critter & Guitari Organelle, first audio routed through the new Eurorack setup.
 
