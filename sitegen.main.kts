@@ -28,6 +28,7 @@ val HEADER = """
     body{
       font-family: Arial, Helvetica, sans-serif;
       padding-bottom: 12px;
+      max-width: 800px;
     }
     .tinytext { font-size: x-small; }
     details { font-size: small; }
@@ -66,17 +67,38 @@ val FOOTER = """
 
 var pendingEmbed = false
 var pendingVideo = false
+var isClean = false
 val flavour = CommonMarkFlavourDescriptor()
 
 when {
-    args.isEmpty() || args.size > 1 -> {
-        //quit("A single path argument is expected")
+    args.isEmpty() -> {
         inspectDirectory(File("."))
     }
-
+    args.size > 1 -> {
+        if(args.first() == "clean"){
+            isClean = true
+            inspectDirectory(File(args[1]))
+            log("\nfinished\n")
+        }else{
+            //ignore all but the first
+            inspectDirectory(File(args[0]))
+            log("\nfinished\n")
+        }
+    }
     else -> {
-        inspectDirectory(File(args.first()))
-        log("\nfinished\n")
+        //Single arg
+        val arg = args.first()
+        when (arg) {
+            "clean" -> {
+                isClean = true
+                inspectDirectory(File("."))
+                log("\nfinished\n")
+            }
+            else -> {
+                inspectDirectory(File(arg))
+                log("\nfinished\n")
+            }
+        }
     }
 }
 
@@ -90,6 +112,9 @@ fun inspectDirectory(directory: File) {
                 file.extension.lowercase() == "md" -> convertMarkdown(directory, file)
             }
         }
+
+        writeDotFile(directory)
+
         directory.listFiles()?.forEach { file ->
             when {
                 file.isDirectory -> inspectDirectory(file)
@@ -103,7 +128,14 @@ fun inspectDirectory(directory: File) {
 var tree: ASTNode? = null
 
 fun convertMarkdown(directory: File, mdFile: File) {
+    val dotTimestamp = dotTimestamp(directory)
     log("Processing: ${mdFile.path}")
+
+    if(dotTimestamp > mdFile.lastModified() && !isClean){
+        log("Skipping unmodified ${mdFile.path}")
+        return
+    }
+
     val sb = StringBuilder()
     val markdown = mdFile.readText()
     tree = MarkdownParser(flavour).buildMarkdownTreeFromString(markdown)
@@ -131,6 +163,7 @@ fun processMarkdown(directory: File, markdown: String, node: ASTNode, sb: String
         node.type.name == ":" -> if(!pendingEmbed && !pendingVideo) sb.append(":")
         node.type.name == "(" -> if(!pendingEmbed && !pendingVideo) sb.append("(")
         node.type.name == ")" -> if(!pendingEmbed && !pendingVideo) sb.append(")")
+        node.type.name == "'" -> if(!pendingEmbed && !pendingVideo) sb.append("'")
         node.type == MarkdownElementTypes.PARAGRAPH -> parseParagraph(directory, markdown, node, sb)
         node.type == MarkdownElementTypes.IMAGE -> parseImage(directory, markdown, node, sb)
         node.type == MarkdownElementTypes.UNORDERED_LIST -> parseUnorderedList(directory, markdown, node, sb)
@@ -343,7 +376,8 @@ fun parseImage(directory: File, markdown: String, node: ASTNode, sb: StringBuild
 
             val origPath = "${directory.path}/$destination".replace("/images/images/", "/images/")
             val targetPath = "${directory.path}/$target".replace("/images/images/", "/images/")
-            val imageCommand = "magick $origPath -quality 6 -colorspace Gray $targetPath"
+            //val imageCommand = "magick $origPath -quality 6 -colorspace Gray $targetPath"
+            val imageCommand = "magick $origPath -quality 6 $targetPath"
             log("imageCommand: $imageCommand")
             shell(imageCommand)
             log("")
@@ -391,6 +425,22 @@ fun parseHeader(markdown: String, node: ASTNode, sb: StringBuilder) {
             }
         }
         sb.append("</$tag>")
+    }
+}
+
+fun writeDotFile(directory: File){
+    //Write dot file timestamp
+    val dotFile = File(directory, ".sitegen")
+    if (dotFile.exists()) dotFile.delete()
+    dotFile.createNewFile()
+    dotFile.writeText("${System.currentTimeMillis()}")
+}
+
+fun dotTimestamp(directory: File): Long{
+    val dotFile = File(directory, ".sitegen")
+    return when {
+        dotFile.exists() -> dotFile.readText().toLong()
+        else -> 0L
     }
 }
 

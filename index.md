@@ -22,6 +22,10 @@ A human, born CO₂ at 333.73 ppm, living in Todmorden, Yorkshire, UK.
 * [Resonance](projects/resonance/) - a drone instrument and sequencer for Playdate
 * [Modular Play](projects/modular_play/) - a fully modular audio playground for Playdate
 
+## Archived projects
+
+* [Lento](projects/lento/)
+
 ## Internal links
 
 * [Log](log/) - periodic miscellaneous updates 
